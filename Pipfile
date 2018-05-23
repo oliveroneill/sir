@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 "jinja2" = "*"
+"boto3" = "*"
 
 [dev-packages]
 

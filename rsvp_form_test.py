@@ -19,9 +19,10 @@ def test_rsvp_form(monkeypatch):
     response = rsvp_form.rsvp_form({"queryStringParameters": params}, {})
     assert response["statusCode"] == 200
 
+    # Load the template as well to ensure they match
     template = jinja2.Environment(
         loader=jinja2.FileSystemLoader('./')
-    ).get_template('rsvp_form.html')
+    ).get_template('public/tmpl/rsvp_form.html')
     assert response["body"] == template.render(**info)
 
 

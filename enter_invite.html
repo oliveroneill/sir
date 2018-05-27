@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.css">
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.js"></script>
+    <style>
+      @media screen and (max-width: 600px) {
+        .center{
+          margin-left: -120px;
+          left: 50%;
+          top: 25%;
+          position: absolute;
+        }
+      }
+      @media screen and (min-width: 600px) {
+        .center{
+          margin-left: -150px;
+          left: 50%;
+          top: 25%;
+          position: absolute;
+        }
+      }
+      form {
+           display: inline;
+           margin: 0px;
+           padding: 0px;
+      }
+    </style>
+  </head>
+  <body>
+    <form action="rsvp_details">
+      <div class="center ui action input">
+          <input name="invite_code" type="text" maxlength="6" placeholder="Enter Invitation Code">
+          <button class="ui button">Go</button>
+      </div>
+    </form>
+  </body>
+</html>

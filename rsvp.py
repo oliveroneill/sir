@@ -32,7 +32,7 @@ def rsvp(event, context):
     # If there was no error then show the success page
     template = jinja2.Environment(
         loader=jinja2.FileSystemLoader('./')
-    ).get_template('success.html')
+    ).get_template('public/tmpl/success.html')
     return {
         "statusCode": 200,
         "headers": {"Content-Type": "text/html"},

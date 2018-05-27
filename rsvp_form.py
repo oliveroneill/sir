@@ -32,7 +32,7 @@ def rsvp_form(event, context):
 
     template = jinja2.Environment(
         loader=jinja2.FileSystemLoader('./')
-    ).get_template('rsvp_form.html')
+    ).get_template('public/tmpl/rsvp_form.html')
     return {
         "statusCode": 200,
         "headers": {"Content-Type": "text/html"},
@@ -50,7 +50,7 @@ def error_page(invite_code: str):
     """
     template = jinja2.Environment(
         loader=jinja2.FileSystemLoader('./')
-    ).get_template('error.html')
+    ).get_template('public/tmpl/error.html')
     return {
         "statusCode": 403,
         "headers": {"Content-Type": "text/html"},

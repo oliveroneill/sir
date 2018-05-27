@@ -14,7 +14,7 @@ def invite_form(event, context):
     """Get response for invite code page. Invoked by AWS Lambda."""
     template = jinja2.Environment(
         loader=jinja2.FileSystemLoader('./')
-    ).get_template('enter_invite.html')
+    ).get_template('public/tmpl/enter_invite.html')
     return {
         "statusCode": 200,
         "headers": {"Content-Type": "text/html"},

@@ -16,7 +16,7 @@ def get_invitee(invite_code: str):
     return get_invitee_from_table(invite_code, table)
 
 
-def get_invitee_from_table(invite_code: str, table: boto3.DynamoDB.Client):
+def get_invitee_from_table(invite_code: str, table):
     """
     Get a dictionary of the stored information for this invite code.
 

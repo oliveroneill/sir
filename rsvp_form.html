@@ -1,0 +1,101 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.css">
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.js"></script>
+    <script>
+      /**
+       * When "Going" is checked we require additional information. For this
+       * reason, we show and hide that info based on the user's checkbox choice.
+       */
+      function onChecked(id) {
+        if (id === 'going') {
+          $("#food-option").show();
+          $("#plus-one").show();
+          $("#music-recommendation").show();
+        } else if (id === 'not-going') {
+          $("#food-option").hide();
+          $("#plus-one").hide();
+          $("#music-recommendation").hide();
+        }
+      }
+      $(document).ready(function() {
+        {% if going %}
+        onChecked('going');
+        {% else %}
+        onChecked('not-going');
+        {% endif %}
+        // Set up listener for UI interaction
+        $('.ui.radio.checkbox').checkbox({
+          onChecked: function() {
+            onChecked($(this).attr('id'));
+          }
+        });
+      });
+    </script>
+    <style>
+      @media screen and (max-width: 600px) {
+        .center{
+          margin-left: -120px;
+          left: 40%;
+          top: 25%;
+          width: 200px;
+        }
+      }
+      @media screen and (min-width: 600px) {
+        .center{
+          margin-left: -150px;
+          left: 40%;
+          top: 25%;
+          width: 500px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <form class="center ui form" action="error.html" method="POST">
+      <h4 class="ui dividing header">Hi {{ name }}</h4>
+      <div class="inline fields">
+        <div class="field">
+          <div class="ui radio checkbox">
+            <input type="radio" name="going" value=true id="going" {% if going %} checked="" {% endif %} tabindex="0">
+            <label>Going</label>
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui radio checkbox">
+            <input type="radio" name="going" value=false id="not-going" {% if not going %} checked="" {% endif %} tabindex="0">
+            <label>Not going</label>
+          </div>
+        </div>
+      </div>
+      <div class="field" id="food-option">
+        <label>Food Option</label>
+        <select class="ui fluid dropdown" name="food">
+          <option value="default" {% if food == 'default' %} selected {% endif %}>I'll eat whatever</option>
+          <option value="vegetarian"{% if food == 'vegetarian' %} selected {% endif %}>Vegetarian</option>
+          <option value="vegan"{% if food == 'vegan' %} selected {% endif %}>Vegan</option>
+        </select>
+      </div>
+      <div class="field" id="plus-one">
+        <div class="ui checkbox">
+          <input name="plus_one" type="checkbox" tabindex="0" {% if plus_one %} checked="" {% endif %}>
+          <label>Bringing a plus one?</label>
+        </div>
+      </div>
+      <div class="field" id="music-recommendation">
+        <label>Music recommendation</label>
+        <input type="text" name="music" placeholder="What's a song you like?" value="{{ music }}">
+      </div>
+      <div class="field" id="notes">
+        <label>Anything else?</label>
+        <textarea name="notes" rows="2">{{ notes }}</textarea>
+      </div>
+      <input type="hidden" name="invite_code" value="{{ invite_code }}"/>
+      <button class="ui button" tabindex="0">Submit</button>
+    </form>
+  </body>
+</html>

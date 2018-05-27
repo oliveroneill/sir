@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.css">
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.js"></script>
+    <style>
+      @media screen and (max-width: 600px) {
+        .center{
+          margin-left: -220px;
+          left: 50%;
+          top: 25%;
+          position: absolute;
+        }
+      }
+      @media screen and (min-width: 600px) {
+        .center{
+          margin-left: -240px;
+          left: 50%;
+          top: 25%;
+          position: absolute;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="center">
+      <h2 class="ui aligned icon header">
+        <i class="circular users icon"></i>
+        We didn't recognise your invite code
+      </h2>
+      <span>Make sure you entered in the code correctly. This is what you entered: {{code}}</span>
+      <br/>
+      <a style="padding-left:180px" href="enter_invite">Try again?</a>
+    </div>
+  </body>
+</html>

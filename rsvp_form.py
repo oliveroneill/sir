@@ -32,7 +32,7 @@ def rsvp_form(event, context):
 
     template = jinja2.Environment(
         loader=jinja2.FileSystemLoader('./')
-    ).get_template('invitation_form.html')
+    ).get_template('rsvp_form.html')
     return {
         "statusCode": 200,
         "headers": {"Content-Type": "text/html"},

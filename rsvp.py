@@ -18,6 +18,10 @@ def rsvp(event, context):
     """
     # Parse the query string into a dictionary
     body = dict(parse_qsl(event["body"]))
+    # HTML form checkboxes send the value 'on' or 'off' instead of a boolean
+    # value. This is not the case for 'going' because it uses two checkboxes.
+    # To convert it to boolean we do some pre-processing before updating
+    body["plus_one"] = body["plus_one"] == 'on'
 
     try:
         dynamodb.update_rsvp(body)

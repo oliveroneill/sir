@@ -7,3 +7,6 @@ __pycache__/
 *.so
 
 package.zip
+
+.cache/
+.pytest_cache/

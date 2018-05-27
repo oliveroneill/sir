@@ -18,5 +18,4 @@ aws lambda create-function --function-name respond --zip-file fileb://package.zi
 You can then direct users to the `enter_invite` Lambda to enter their invite code.
 
 ## TODO
-- Unit testing
 - Automatic deployment

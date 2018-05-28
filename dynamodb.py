@@ -82,13 +82,15 @@ def update_rsvp(data: dict):
         Key={
             'invite_code': code
         },
-        UpdateExpression="set going = :g, food=:f, plus_one=:p, music=:m, notes=:n",
+        UpdateExpression="set going = :g, food=:f, plus_one=:p, music=:m, notes=:n, plus_one_name=:pn, plus_one_food=:pf",
         ExpressionAttributeValues={
             ':g': data["going"],
             ':f': data["food"],
             ':p': data["plus_one"],
             ':m': data["music"],
-            ':n': data["notes"]
+            ':n': data["notes"],
+            ':pn': data["plus_one_name"],
+            ':pf': data["plus_one_food"]
         }
     )
 

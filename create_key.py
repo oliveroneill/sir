@@ -8,9 +8,11 @@ from boto3.dynamodb.conditions import Key
 
 # Default settings for invitation form
 DEFAULT_VALUES = {
-    'food': 'default',
+    'food': None,
     'going': True,
     'plus_one': False,
+    'plus_one_name': None,
+    'plus_one_food': None,
     'music': None,
     'notes': None
 }

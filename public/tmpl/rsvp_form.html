@@ -45,7 +45,7 @@
         {% else %}
         onChecked('not-going');
         {% endif %}
-        onPlusOneChanged({{ plus_one }});
+        onPlusOneChanged({% if plus_one %}true{% else %}false{% endif %});
         // Set up listener for UI interaction
         $('.ui.checkbox').checkbox({
           onChecked: function() {

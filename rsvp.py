@@ -1,9 +1,12 @@
 """Handler for updating RSVP information."""
+import os
+import pprint
 from urllib.parse import parse_qsl
 
 import dynamodb
 import jinja2
 from rsvp_form import error_page
+from slackclient import SlackClient
 
 
 def rsvp(event, context):
@@ -33,8 +36,24 @@ def rsvp(event, context):
     template = jinja2.Environment(
         loader=jinja2.FileSystemLoader('./')
     ).get_template('public/tmpl/success.html')
+    slack_log(body)
     return {
         "statusCode": 200,
         "headers": {"Content-Type": "text/html"},
         "body": template.render()
     }
+
+
+def slack_log(body):
+    token = os.environ.get("SLACK_API_TOKEN")
+    channel_name = os.environ.get("SLACK_CHANNEL_NAME")
+    if token is None or channel_name is None:
+        return
+    client = SlackClient(token)
+    message = "Updated: " + pprint.pformat(body)
+
+    client.api_call(
+        "chat.postMessage",
+        channel=channel_name,
+        text=message
+    )

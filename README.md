@@ -17,5 +17,10 @@ aws lambda create-function --function-name respond --zip-file fileb://package.zi
 
 You can then direct users to the `enter_invite` Lambda to enter their invite code.
 
+## Slack Logging
+You can get updates when users RSVP via Slack. To do this, set environment
+variables `SLACK_API_TOKEN` and `SLACK_CHANNEL_NAME`. Leaving these blank
+will disable logging.
+
 ## TODO
 - Automatic deployment

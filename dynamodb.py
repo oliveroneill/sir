@@ -84,13 +84,13 @@ def update_rsvp(data: dict):
         },
         UpdateExpression="set going = :g, food=:f, plus_one=:p, music=:m, notes=:n, plus_one_name=:pn, plus_one_food=:pf",
         ExpressionAttributeValues={
-            ':g': data["going"],
-            ':f': data["food"],
-            ':p': data["plus_one"],
-            ':m': data["music"],
-            ':n': data["notes"],
-            ':pn': data["plus_one_name"],
-            ':pf': data["plus_one_food"]
+            ':g': data.get("going"),
+            ':f': data.get("food"),
+            ':p': data.get("plus_one"),
+            ':m': data.get("music"),
+            ':n': data.get("notes"),
+            ':pn': data.get("plus_one_name"),
+            ':pf': data.get("plus_one_food")
         }
     )
 

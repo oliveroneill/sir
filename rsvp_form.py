@@ -4,8 +4,9 @@ Handler for checking the invitation code and displaying the RSVP form.
 This module contains some useful util functions for displaying error
 messages and checking whether an invite code is valid.
 """
-import dynamodb
+import os
 
+import dynamodb
 import jinja2
 
 
@@ -33,11 +34,13 @@ def rsvp_form(event, context):
     template = jinja2.Environment(
         loader=jinja2.FileSystemLoader('./')
     ).get_template('public/tmpl/rsvp_form.html')
+
+    spotify_api_token = os.environ.get("SPOTIFY_API_TOKEN")
     return {
         "statusCode": 200,
         "headers": {"Content-Type": "text/html"},
         # The invite information is used to render the form
-        "body": template.render(**invitee)
+        "body": template.render(**invitee, spotify_api_token=spotify_api_token)
     }
 
 

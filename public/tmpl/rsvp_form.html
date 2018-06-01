@@ -1,10 +1,12 @@
 <html>
   <head>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.css">
     <script
       src="https://code.jquery.com/jquery-3.1.1.min.js"
       integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
       crossorigin="anonymous"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js'></script>
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.js"></script>
     <script>
       function onPlusOneChanged(checked) {
@@ -40,6 +42,48 @@
         }
       }
       $(document).ready(function() {
+        {% if spotify_api_token is not none %}
+        // If the Spotify token is set we can enable autocomplete
+        // using Spotify's API to search for songs
+        $("#music").autocomplete({
+          source: function(request, response) {
+            $.ajax({
+              type: "GET",
+              url: "https://api.spotify.com/v1/search",
+              dataType: "json",
+              beforeSend: function(request) {
+                // Include the API token for authorisation
+                request.setRequestHeader("Authorization", "Bearer {{ spotify_api_token }}");
+              },
+              data: {
+                type: "track",
+                limit: 5,
+                contentType: "application/json",
+                q: request.term
+              },
+              success: function(data) {
+                // Map to expected output for autocomplete fields
+                response($.map(data.tracks.items, function(item) {
+                  var track = item.name + " by " + item.artists[0].name
+                  return {
+                    label: track,
+                    value: track,
+                    id: item.id
+                  }
+                }));
+              }
+            });
+          },
+          select: function(event, ui) {
+            // Set the value of the song-id input to the Spotify track ID
+            // We'll then have a user friendly string for the track and the
+            // ID for later use with Spotify API
+            $("#song-id").val(function(i, val) {
+              return ui.item.id;
+            });
+          }
+        });
+        {% endif %}
         {% if going %}
         onChecked('going');
         {% else %}
@@ -115,12 +159,13 @@
       </div>
       <div class="field" id="music-recommendation">
         <label>Music recommendation</label>
-        <input type="text" name="music" placeholder="What's a song you like?" value="{{ music }}">
+        <input type="text" id="music" name="music" placeholder="What's a song you like?" value="{{ music }}">
       </div>
       <div class="field" id="notes">
         <label>Anything else?</label>
         <textarea name="notes" rows="2">{{ notes }}</textarea>
       </div>
+      <input type="hidden" id="song-id" name="song_id" value="{{ song_id }}"/>
       <input type="hidden" name="invite_code" value="{{ invite_code }}"/>
       <input type="hidden" name="name" value="{{ name }}"/>
       <button class="ui button" tabindex="0">Submit</button>

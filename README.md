@@ -22,5 +22,10 @@ You can get updates when users RSVP via Slack. To do this, set environment
 variables `SLACK_API_TOKEN` and `SLACK_CHANNEL_NAME`. Leaving these blank
 will disable logging.
 
+## Spotify Autocomplete
+The UI has the option of autocompleting song searches. To use this set
+the environment variable `SPOTIFY_CLIENT_SECRET`. This should be set to
+a base64 encoding of `client_id:client_secret`. See the [Spotify docs](https://developer.spotify.com/documentation/general/guides/authorization-guide/#client-credentials-flow) for more info.
+
 ## TODO
 - Automatic deployment

@@ -8,6 +8,7 @@ import os
 
 import dynamodb
 import jinja2
+import requests
 
 
 def rsvp_form(event, context):
@@ -35,13 +36,36 @@ def rsvp_form(event, context):
         loader=jinja2.FileSystemLoader('./')
     ).get_template('public/tmpl/rsvp_form.html')
 
-    spotify_api_token = os.environ.get("SPOTIFY_API_TOKEN")
+    spotify_api_token = get_spotify_api_token()
     return {
         "statusCode": 200,
         "headers": {"Content-Type": "text/html"},
         # The invite information is used to render the form
         "body": template.render(**invitee, spotify_api_token=spotify_api_token)
     }
+
+
+def get_spotify_api_token():
+    """
+    Make request to create a Spotify access token.
+
+    This will check an environment variable named "SPOTIFY_CLIENT_SECRET",
+    which should be set to a base64 encoding of client_id:client_secret
+
+    See https://developer.spotify.com/documentation/general/guides/authorization-guide/#client-credentials-flow
+    for details.
+    """
+    spotify_api_token = os.environ.get("SPOTIFY_CLIENT_SECRET")
+    if spotify_api_token is None:
+        return None
+    headers = {"Authorization": "Basic " + spotify_api_token}
+    data = {'grant_type': 'client_credentials'}
+    r = requests.post(
+        'https://accounts.spotify.com/api/token',
+        data=data, headers=headers
+    )
+    response = r.json()
+    return response.get("access_token")
 
 
 def error_page(invite_code: str):

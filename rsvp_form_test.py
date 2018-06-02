@@ -3,6 +3,7 @@ import os
 import dynamodb
 import jinja2
 import rsvp_form
+import requests
 
 
 def test_rsvp_form(monkeypatch):
@@ -54,9 +55,9 @@ def test_rsvp_form_spotify_token(monkeypatch):
         return info
     monkeypatch.setattr(dynamodb, 'get_invitee', mockreturn)
 
-    def mock_env_return(name):
+    def mock_spotify_token():
         return spotify_api_token
-    monkeypatch.setattr(os.environ, 'get', mock_env_return)
+    monkeypatch.setattr(rsvp_form, 'get_spotify_api_token', mock_spotify_token)
 
     params = {"invite_code": "EF321"}
     response = rsvp_form.rsvp_form({"queryStringParameters": params}, {})
@@ -68,3 +69,25 @@ def test_rsvp_form_spotify_token(monkeypatch):
     ).get_template('public/tmpl/rsvp_form.html')
     expected = template.render(**info, spotify_api_token=spotify_api_token)
     assert response["body"] == expected
+
+
+def test_get_spotify_api_token(monkeypatch):
+    spotify_api_token = "test_token123"
+
+    def mock_env_return(name):
+        return spotify_api_token
+    monkeypatch.setattr(os.environ, 'get', mock_env_return)
+
+    def mock_requests(url, headers):
+        class Response(object):
+            def json(self):
+                return {"access_token": spotify_api_token}
+        return Response()
+
+    monkeypatch.setattr(requests, 'post', mock_requests)
+
+    assert rsvp_form.get_spotify_api_token() == spotify_api_token
+
+
+def test_get_spotify_api_token_not_set(monkeypatch):
+    assert rsvp_form.get_spotify_api_token() is None

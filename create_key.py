@@ -14,7 +14,8 @@ DEFAULT_VALUES = {
     'plus_one_name': None,
     'plus_one_food': None,
     'music': None,
-    'notes': None
+    'notes': None,
+    'song_id': None
 }
 
 

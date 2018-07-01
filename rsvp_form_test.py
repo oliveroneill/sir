@@ -78,7 +78,7 @@ def test_get_spotify_api_token(monkeypatch):
         return spotify_api_token
     monkeypatch.setattr(os.environ, 'get', mock_env_return)
 
-    def mock_requests(url, headers):
+    def mock_requests(url, data, headers):
         class Response(object):
             def json(self):
                 return {"access_token": spotify_api_token}

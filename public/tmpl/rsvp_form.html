@@ -144,6 +144,7 @@
         <label>Dietary Requirements</label>
         <input type="text" name="food" placeholder="List allergies and preferences" value="{{ food }}">
       </div>
+      {% if plus_one_allowed %}
       <div class="field" id="plus-one-field">
         <div class="ui checkbox">
           <input name="plus_one" id="plus-one" type="checkbox" tabindex="0" {% if plus_one %} checked="" {% endif %}>
@@ -158,6 +159,7 @@
         <label>Plus One's Dietary Requirements</label>
         <input type="text" name="plus_one_food" placeholder="List allergies and preferences" value="{{ plus_one_food }}">
       </div>
+      {% endif %}
       <div class="field" id="music-recommendation">
         <label>Song request</label>
         <input type="text" id="music" name="music" placeholder="What's a song you like?" value="{{ music }}">

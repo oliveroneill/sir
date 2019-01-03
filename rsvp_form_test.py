@@ -2,8 +2,16 @@ import os
 
 import dynamodb
 import jinja2
-import rsvp_form
+import pytest
 import requests
+import rsvp_form
+
+
+@pytest.fixture(autouse=True)
+def before_each():
+    # Since we change this in tests, we should set it back to the default
+    rsvp_form.is_plus_one_allowed = True
+    yield
 
 
 def test_rsvp_form(monkeypatch):
@@ -29,7 +37,45 @@ def test_rsvp_form(monkeypatch):
     # spotify_api_token must specifically be None because missing parameters
     # ome out as empty strings in Jinja2. Luckily None will come out of
     # os.environ.get so this case won't happen in production
-    assert response["body"] == template.render(**info, spotify_api_token=None)
+    expected = template.render(
+        **info,
+        spotify_api_token=None,
+        plus_one_allowed=True,
+    )
+    assert response["body"] == expected
+
+
+def test_rsvp_form_plus_one_disabled(monkeypatch):
+    info = {
+        "going": True,
+        "food": "vegan",
+        "plus_one": False,
+        "music": "Sufjan Stevens",
+        "notes": "I'll be half an hour late"
+    }
+
+    def mockreturn(invite_code):
+        return info
+    monkeypatch.setattr(dynamodb, 'get_invitee', mockreturn)
+    params = {"invite_code": "EF321"}
+    # Disable plus one
+    rsvp_form.is_plus_one_allowed = False
+    response = rsvp_form.rsvp_form({"queryStringParameters": params}, {})
+    assert response["statusCode"] == 200
+
+    # Load the template as well to ensure they match
+    template = jinja2.Environment(
+        loader=jinja2.FileSystemLoader('./')
+    ).get_template('public/tmpl/rsvp_form.html')
+    # spotify_api_token must specifically be None because missing parameters
+    # ome out as empty strings in Jinja2. Luckily None will come out of
+    # os.environ.get so this case won't happen in production
+    expected = template.render(
+        **info,
+        spotify_api_token=None,
+        plus_one_allowed=False,
+    )
+    assert response["body"] == expected
 
 
 def test_rsvp_form_unknown_code(monkeypatch):
@@ -67,7 +113,11 @@ def test_rsvp_form_spotify_token(monkeypatch):
     template = jinja2.Environment(
         loader=jinja2.FileSystemLoader('./')
     ).get_template('public/tmpl/rsvp_form.html')
-    expected = template.render(**info, spotify_api_token=spotify_api_token)
+    expected = template.render(
+        **info,
+        spotify_api_token=spotify_api_token,
+        plus_one_allowed=True,
+    )
     assert response["body"] == expected
 
 

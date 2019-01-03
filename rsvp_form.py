@@ -10,6 +10,10 @@ import dynamodb
 import jinja2
 import requests
 
+# Set to false if plus one's are not allowed
+# TODO: should probably setup some sort of configuration for things like this
+is_plus_one_allowed = True
+
 
 def rsvp_form(event, context):
     """
@@ -41,7 +45,11 @@ def rsvp_form(event, context):
         "statusCode": 200,
         "headers": {"Content-Type": "text/html"},
         # The invite information is used to render the form
-        "body": template.render(**invitee, spotify_api_token=spotify_api_token)
+        "body": template.render(
+            **invitee,
+            spotify_api_token=spotify_api_token,
+            plus_one_allowed=is_plus_one_allowed,
+        )
     }
 
 

@@ -15,7 +15,8 @@ DEFAULT_VALUES = {
     'plus_one_food': None,
     'music': None,
     'notes': None,
-    'song_id': None
+    'song_id': None,
+    'sent_rsvp': False,
 }
 
 
@@ -58,7 +59,7 @@ def is_code_unique(table, code):
     return len(response['Items']) == 0
 
 
-def main(name):
+def create_key(name):
     """
     Add this invitee to the database by using the specified name.
 
@@ -80,6 +81,7 @@ def main(name):
     record.update(DEFAULT_VALUES)
     table.put_item(Item=record)
     print("Successfully added invitee. Invitation code is", code)
+    return code
 
 
 if __name__ == "__main__":
@@ -89,4 +91,4 @@ if __name__ == "__main__":
     parser.add_argument('name', type=str, help='Invitee name')
     args = parser.parse_args()
 
-    main(name=args.name)
+    create_key(name=args.name)

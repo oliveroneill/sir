@@ -16,6 +16,7 @@ DEFAULT_VALUES = {
     'music': None,
     'notes': None,
     'song_id': None,
+    # sent_rsvp is used to identify guests that haven't RSVP'd yet
     'sent_rsvp': False,
 }
 

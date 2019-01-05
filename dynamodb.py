@@ -79,8 +79,8 @@ def update_rsvp(data: dict):
     data = {k: convert_empty_string_to_none(v) for k, v in data.items()}
 
     expression = """
-    set going = :g, food=:f, plus_one=:p, music=:m, notes=:n, plus_one_name=:pn,
-    plus_one_food=:pf, song_id=:s, sent_rsvp=:sr"
+    set going = :g, food=:f, plus_one=:p, music=:m, notes=:n,
+    plus_one_name=:pn, plus_one_food=:pf, song_id=:s, sent_rsvp=:sr
     """
     table.update_item(
         Key={
@@ -88,9 +88,9 @@ def update_rsvp(data: dict):
         },
         UpdateExpression=expression,
         ExpressionAttributeValues={
-            ':g': data.get("going"),
+            ':g': data.get("going") == 'true',
             ':f': data.get("food"),
-            ':p': data.get("plus_one"),
+            ':p': data.get("plus_one") == 'true',
             ':m': data.get("music"),
             ':n': data.get("notes"),
             ':pn': data.get("plus_one_name"),

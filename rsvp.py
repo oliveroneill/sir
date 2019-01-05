@@ -29,6 +29,13 @@ def rsvp(event, context):
     try:
         dynamodb.update_rsvp(body)
     except dynamodb.UnknownInviteCodeError:
+        # Log error to Slack since you shouldn't be able to get here normally
+        slack_log(
+            {
+                "message": "Someone got a bad invite code!",
+                "body": body,
+            }
+        )
         # If the code is unknown then show an error page
         return error_page(body["invite_code"])
 

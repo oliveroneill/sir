@@ -78,7 +78,10 @@ def update_rsvp(data: dict):
     # Convert the data since DynamoDB can't handle empty strings
     data = {k: convert_empty_string_to_none(v) for k, v in data.items()}
 
-    expression = "set going = :g, food=:f, plus_one=:p, music=:m, notes=:n, plus_one_name=:pn, plus_one_food=:pf, song_id=:s"
+    expression = """
+    set going = :g, food=:f, plus_one=:p, music=:m, notes=:n, plus_one_name=:pn,
+    plus_one_food=:pf, song_id=:s, sent_rsvp=:sr"
+    """
     table.update_item(
         Key={
             'invite_code': code
@@ -92,7 +95,9 @@ def update_rsvp(data: dict):
             ':n': data.get("notes"),
             ':pn': data.get("plus_one_name"),
             ':pf': data.get("plus_one_food"),
-            ':s': data.get("song_id")
+            ':s': data.get("song_id"),
+            # Set sent_rsvp to true since this is the response
+            ':sr': True,
         }
     )
 
